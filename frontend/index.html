@@ -1,0 +1,685 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Setu Swasth — the memory rural healthcare in India never had</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0f1a17;
+    --paper:#faf6ec;
+    --cream: #f4ecd8;
+    --clay:#c1673f;
+    --clay-bright:#e08653;
+    --leaf:#3f7a5a;
+    --leaf-bright:#5aa377;
+    --gold:#d4a24c;
+    --line: rgba(15,26,23,0.12);
+    --line-dark: rgba(250,246,236,0.14);
+    --radius: 14px;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background: var(--paper);
+    color: var(--ink);
+    font-family:'Inter', sans-serif;
+    overflow-x:hidden;
+  }
+  ::selection{ background: var(--clay-bright); color:#fff; }
+  a{color:inherit;}
+  img{max-width:100%;}
+
+  /* ---------- Nav ---------- */
+  nav{
+    position:fixed; top:0; left:0; right:0; z-index:50;
+    display:flex; align-items:center; justify-content:space-between;
+    padding: 18px 5vw;
+    backdrop-filter: blur(10px);
+    background: rgba(250,246,236,0.85);
+    border-bottom: 1px solid var(--line);
+  }
+  .brand{ display:flex; align-items:center; gap:10px; font-family:'Fraunces', serif; font-size:1.3rem; font-weight:600;}
+  .brand .mark{
+    width:28px; height:28px; border-radius:50%;
+    background: radial-gradient(circle at 35% 30%, var(--leaf-bright), var(--leaf) 60%, transparent 80%);
+    box-shadow: 0 0 14px 1px rgba(63,122,90,0.4);
+  }
+  .navlinks{ display:flex; gap:28px; font-size:0.9rem; color:#4a5750; }
+  .navlinks span{ cursor:pointer; transition: color .2s; }
+  .navlinks span:hover{ color: var(--clay); }
+  .status-pill{
+    font-family:'JetBrains Mono', monospace; font-size:0.7rem;
+    border:1px solid var(--line); border-radius:999px; padding:6px 12px;
+    display:flex; align-items:center; gap:8px; color:#4a5750; background:#fff;
+  }
+  .dot{ width:7px; height:7px; border-radius:50%; background:#3f7a5a; box-shadow:0 0 6px #3f7a5a; }
+  .dot.off{ background:#c1673f; box-shadow:0 0 6px #c1673f;}
+
+  /* ---------- Hero ---------- */
+  header.hero{
+    position:relative; min-height: 92vh;
+    display:flex; align-items:center;
+    padding: 120px 6vw 60px;
+    background:
+      radial-gradient(circle at 85% 15%, rgba(212,162,76,0.16), transparent 45%),
+      radial-gradient(circle at 10% 90%, rgba(63,122,90,0.14), transparent 45%);
+  }
+  .hero-grid{ display:grid; grid-template-columns: 1.1fr 0.9fr; gap:50px; align-items:center; max-width:1240px; margin:0 auto; width:100%;}
+  @media (max-width:940px){ .hero-grid{ grid-template-columns:1fr; } }
+  .eyebrow{
+    font-family:'JetBrains Mono', monospace; letter-spacing:0.14em; text-transform:uppercase;
+    font-size:0.7rem; color: var(--clay); margin-bottom:20px; display:inline-block;
+    border:1px solid rgba(193,103,63,0.35); padding:6px 14px; border-radius:999px;
+  }
+  h1{
+    font-family:'Fraunces', serif; font-weight:600; font-size: clamp(2.3rem, 4.6vw, 3.6rem);
+    line-height:1.08; letter-spacing:-0.01em;
+  }
+  h1 em{ font-style:italic; color: var(--clay); font-weight:500;}
+  .lede{ margin: 24px 0 0; max-width:520px; color:#485750; font-size: 1.08rem; line-height:1.65; }
+  .cta-row{ display:flex; gap:14px; margin-top:34px; flex-wrap:wrap;}
+  .btn{
+    font-family:'Inter'; font-weight:600; font-size:0.93rem; padding:14px 26px; border-radius:999px;
+    cursor:pointer; border:1px solid transparent; transition: transform .18s ease, box-shadow .18s ease;
+  }
+  .btn-primary{ background: var(--leaf); color:#fff; }
+  .btn-primary:hover{ transform: translateY(-2px); box-shadow: 0 10px 26px -8px rgba(63,122,90,0.55);}
+  .btn-ghost{ background: transparent; color: var(--ink); border-color: var(--line); }
+  .btn-ghost:hover{ border-color: var(--clay); color: var(--clay); transform: translateY(-2px);}
+  .stat-row{ display:flex; gap:30px; margin-top:40px; flex-wrap:wrap;}
+  .stat{ font-family:'Fraunces', serif; font-size:1.7rem; font-weight:600; color:var(--leaf);}
+  .stat span{ display:block; font-family:'Inter'; font-size:0.75rem; font-weight:500; color:#6b7770; margin-top:4px; }
+
+  /* ---------- Hero visual: patient thread ---------- */
+  .thread-card{
+    background:#fff; border:1px solid var(--line); border-radius:20px; padding:26px;
+    box-shadow: 0 30px 70px -30px rgba(15,26,23,0.25);
+    position:relative;
+  }
+  .thread-head{ display:flex; justify-content:space-between; align-items:center; margin-bottom:18px;}
+  .thread-head .name{ font-family:'Fraunces', serif; font-weight:600; font-size:1.1rem;}
+  .thread-head .meta{ font-size:0.75rem; color:#7a857e; }
+  .thread-item{ display:flex; gap:14px; padding:14px 0; border-top:1px dashed var(--line); animation: fadein .6s ease both; }
+  .thread-item:first-of-type{ border-top:none; }
+  @keyframes fadein{ from{opacity:0; transform:translateX(-6px);} to{opacity:1; transform:translateX(0);} }
+  .thread-dot{ width:10px; height:10px; border-radius:50%; margin-top:5px; flex-shrink:0;}
+  .thread-dot.asha{ background:var(--gold); }
+  .thread-dot.doctor{ background:var(--leaf); }
+  .thread-dot.hospital{ background:var(--clay); }
+  .thread-body .prov{ font-weight:600; font-size:0.88rem; }
+  .thread-body .desc{ font-size:0.82rem; color:#5c6961; line-height:1.5; margin-top:2px;}
+  .thread-body .tag{ display:inline-block; font-family:'JetBrains Mono', monospace; font-size:0.65rem; margin-top:6px; padding:2px 8px; border-radius:999px; background:rgba(193,103,63,0.12); color:var(--clay);}
+
+  /* ---------- Sections ---------- */
+  section{ padding: 100px 6vw; max-width:1180px; margin:0 auto; }
+  .section-head{ text-align:center; max-width:660px; margin: 0 auto 56px; }
+  .section-head .eyebrow{ margin-bottom:16px; }
+  .section-head h2{ font-family:'Fraunces', serif; font-size: clamp(1.7rem, 3.2vw, 2.4rem); font-weight:600; }
+  .section-head p{ color:#5c6961; margin-top:14px; line-height:1.6; }
+
+  .split{ display:grid; grid-template-columns: 1fr 1fr; gap:24px; }
+  @media (max-width:820px){ .split{ grid-template-columns:1fr; } }
+  .card{
+    background:#fff; border:1px solid var(--line); border-radius: var(--radius); padding: 28px;
+    transition: transform .25s ease, border-color .25s ease;
+  }
+  .card:hover{ transform: translateY(-4px); }
+  .card h3{ font-family:'Fraunces', serif; font-size:1.25rem; font-weight:600; margin-bottom:12px;}
+  .card p{ color: #5c6961; line-height:1.6; font-size:0.95rem;}
+  .tag-bad{ color:#b5502e; }
+  .tag-good{ color: var(--leaf); }
+  .card ul{ margin-top:10px; padding-left:18px; color:#5c6961; font-size:0.9rem; line-height:1.7;}
+
+  .lifecycle{ display:grid; grid-template-columns: repeat(4,1fr); gap:20px; }
+  @media (max-width:900px){ .lifecycle{ grid-template-columns: repeat(2,1fr);} }
+  .life-card{ border:1px solid var(--line); border-radius: var(--radius); padding:24px 20px; background:#fff; position:relative;}
+  .life-card .num{ font-family:'JetBrains Mono', monospace; font-size:0.7rem; color: var(--clay); }
+  .life-card h4{ font-family:'Fraunces', serif; font-size:1.1rem; margin: 10px 0 8px; }
+  .life-card p{ font-size:0.86rem; color:#5c6961; line-height:1.5;}
+  .life-card code{ font-family:'JetBrains Mono',monospace; font-size:0.72rem; background:var(--cream); padding:2px 6px; border-radius:5px; color:var(--leaf);}
+
+  /* ---------- Demo ---------- */
+  .demo-shell{ border:1px solid var(--line); border-radius:18px; overflow:hidden; background:#fff; box-shadow: 0 30px 70px -34px rgba(15,26,23,0.25);}
+  .demo-tabs{ display:flex; border-bottom:1px solid var(--line); background:var(--cream); }
+  .demo-tab{ padding:14px 22px; font-size:0.85rem; font-weight:600; cursor:pointer; color:#7a857e; border-bottom:2px solid transparent; }
+  .demo-tab.active{ color:var(--ink); border-bottom-color: var(--leaf); background:#fff; }
+  .demo-body{ display:grid; grid-template-columns: 1.3fr 1fr; min-height:560px; }
+  @media (max-width:940px){ .demo-body{ grid-template-columns:1fr; } }
+  .demo-main{ padding:26px; border-right:1px solid var(--line); }
+  @media (max-width:940px){ .demo-main{ border-right:none; border-bottom:1px solid var(--line);} }
+  .demo-side{ padding:22px; background:#0f1a17; color:#e8ece9; }
+
+  .patient-picker{ display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap; align-items:center;}
+  .patient-picker select, .patient-picker input, .field input, .field textarea, .field select{
+    font-family:'Inter'; font-size:0.88rem; padding:10px 14px; border-radius:10px; border:1px solid var(--line); background:#fdfbf4; color:var(--ink); outline:none;
+  }
+  .patient-picker select:focus, .field input:focus, .field textarea:focus{ border-color: var(--leaf); }
+
+  /* Consent / OTP access control */
+  .consent-bar{ border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin-bottom:20px; background: var(--cream); }
+  .consent-bar.locked{ border-color: rgba(193,103,63,0.4); background: rgba(193,103,63,0.06); }
+  .consent-bar.unlocked{ border-color: rgba(63,122,90,0.4); background: rgba(63,122,90,0.07); }
+  .consent-head{ display:flex; align-items:center; gap:8px; font-weight:600; font-size:0.9rem; margin-bottom:8px; }
+  .consent-head .icon{ font-size:1rem; }
+  .consent-sub{ font-size:0.8rem; color:#5c6961; margin-bottom:12px; line-height:1.5;}
+  .consent-row{ display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+  .consent-row input{ font-family:'Inter'; font-size:0.85rem; padding:9px 12px; border-radius:8px; border:1px solid var(--line); background:#fff; outline:none; }
+  .consent-row input:focus{ border-color: var(--leaf); }
+  .otp-demo{ font-family:'JetBrains Mono', monospace; font-size:0.78rem; background:#fff; border:1px dashed var(--clay); color:var(--clay); padding:6px 12px; border-radius:8px; margin-top:8px; display:inline-block;}
+  .btn-sm{ font-family:'Inter'; font-weight:600; font-size:0.82rem; padding:9px 16px; border-radius:999px; background:var(--leaf); color:#fff; border:none; cursor:pointer;}
+  .btn-sm.secondary{ background:transparent; border:1px solid var(--line); color:var(--ink); }
+  .btn-sm.danger{ background:transparent; border:1px solid rgba(193,103,63,0.4); color:var(--clay); }
+
+  .panel{ display:none; }
+  .panel.active{ display:block; animation: fadein .3s ease; }
+
+  .patient-card{ background:var(--cream); border-radius:12px; padding:16px 18px; margin-bottom:20px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;}
+  .patient-card .n{ font-family:'Fraunces', serif; font-weight:600; }
+  .patient-card .m{ font-size:0.78rem; color:#6b7770; }
+
+  .timeline-item{ display:flex; gap:14px; padding:16px 0; border-top:1px solid var(--line); }
+  .timeline-item:first-child{ border-top:none; }
+  .timeline-dot{ width:11px; height:11px; border-radius:50%; margin-top:4px; flex-shrink:0;}
+  .timeline-body .p{ font-weight:600; font-size:0.9rem; }
+  .timeline-body .d{ font-size:0.82rem; color:#5c6961; line-height:1.55; margin-top:3px;}
+  .timeline-body .date{ font-family:'JetBrains Mono', monospace; font-size:0.68rem; color:#8b968f; margin-top:6px; display:block;}
+  .allergy-flag{ display:inline-block; margin-top:6px; font-size:0.72rem; font-weight:700; color:#b5502e; background:rgba(193,103,63,0.1); padding:3px 9px; border-radius:999px;}
+
+  .field{ margin-bottom:14px; display:flex; flex-direction:column; gap:6px; }
+  .field label{ font-size:0.78rem; font-weight:600; color:#4a5750; }
+  .field-row{ display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  @media (max-width:600px){ .field-row{ grid-template-columns:1fr; } }
+
+  .ask-box{ display:flex; gap:10px; margin-top:6px; }
+  .ask-box input{ flex:1; }
+  .answer-box{ margin-top:18px; background:var(--cream); border-radius:12px; padding:18px; font-size:0.9rem; line-height:1.65; white-space:pre-wrap; }
+  .answer-box.loading{ color:#8b968f; font-style:italic; }
+
+  /* Memory lens (cognee live feed) */
+  .lens-title{ font-family:'Fraunces', serif; font-weight:600; display:flex; align-items:center; gap:8px; margin-bottom:4px;}
+  .lens-title .pulse{ width:8px; height:8px; border-radius:50%; background:#5aa377; box-shadow:0 0 8px #5aa377; animation:pulse 1.6s infinite; }
+  @keyframes pulse{ 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+  .lens-sub{ font-size:0.78rem; color:#a7b0ab; margin-bottom:16px; }
+  .lens-log{ display:flex; flex-direction:column; gap:10px; max-height:460px; overflow-y:auto; }
+  .lens-entry{ border:1px solid rgba(255,255,255,0.1); border-radius:10px; padding:10px 12px; animation: rise .3s ease; }
+  @keyframes rise{ from{opacity:0; transform:translateY(6px);} to{opacity:1; transform:translateY(0);} }
+  .lens-op{ font-family:'JetBrains Mono', monospace; font-size:0.72rem; font-weight:700; }
+  .lens-op.remember{ color:#f0c26a; }
+  .lens-op.recall{ color:#7fd1c4; }
+  .lens-op.improve{ color:#c19bf0; }
+  .lens-op.forget{ color:#e0836c; }
+  .lens-detail{ font-size:0.76rem; color:#c7cec9; margin-top:4px; line-height:1.4; }
+  .lens-empty{ font-size:0.8rem; color:#7f897f; }
+
+  /* ---------- Journey ---------- */
+  .journey{ display:grid; grid-template-columns: repeat(4,1fr); gap:0; position:relative;}
+  @media (max-width:900px){ .journey{ grid-template-columns:1fr; gap:20px; } }
+  .journey-step{ text-align:center; padding: 0 16px; position:relative;}
+  .journey-step .ic{ width:56px; height:56px; border-radius:50%; background:var(--cream); display:flex; align-items:center; justify-content:center; margin:0 auto 14px; font-size:1.4rem;}
+  .journey-step h4{ font-family:'Fraunces', serif; font-size:1rem; margin-bottom:6px;}
+  .journey-step p{ font-size:0.82rem; color:#5c6961; line-height:1.5;}
+  .journey-arrow{ position:absolute; top:26px; right:-14px; color:var(--line); font-size:1.2rem;}
+  @media (max-width:900px){ .journey-arrow{ display:none; } }
+
+  .stack-row{ display:flex; flex-wrap:wrap; gap:12px; justify-content:center; }
+  .chip{ border:1px solid var(--line); padding:9px 16px; border-radius:999px; font-family:'JetBrains Mono', monospace; font-size:0.78rem; color:#4a5750; background:#fff;}
+
+  footer{ text-align:center; padding: 56px 6vw 40px; color: #5c6961; font-size:0.85rem; border-top:1px solid var(--line); }
+  footer .brand{ justify-content:center; margin-bottom:14px; }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="brand"><span class="mark"></span>Setu Swasth</div>
+  <div class="navlinks">
+    <span onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">The problem</span>
+    <span onclick="document.getElementById('lifecycle').scrollIntoView({behavior:'smooth'})">How it works</span>
+    <span onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Live demo</span>
+    <span onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">Patient journey</span>
+  </div>
+  <div class="status-pill"><span class="dot" id="statusDot"></span><span id="statusText">checking engine…</span></div>
+</nav>
+
+<header class="hero">
+  <div class="hero-grid">
+    <div>
+      <span class="eyebrow">Persistent patient memory · built on Cognee + Claude</span>
+      <h1>One patient.<br>Every provider.<br><em>One memory that never resets.</em></h1>
+      <p class="lede">In rural India, a patient sees an ASHA worker, a PHC doctor, and a district hospital — each blind to what the others know. Setu Swasth gives every provider instant access to that patient's full history, remembered permanently in Cognee's hybrid graph memory and recalled the moment it's needed.</p>
+      <div class="cta-row">
+        <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Open the live patient demo →</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">Why this matters</button>
+      </div>
+      <div class="stat-row">
+        <div class="stat">3<span>disconnected providers, 1 patient</span></div>
+        <div class="stat">0<span>shared records, today</span></div>
+        <div class="stat">100%<span>recalled instantly, with Setu Swasth</span></div>
+      </div>
+    </div>
+    <div class="thread-card">
+      <div class="thread-head">
+        <span class="name">Kamala Devi, 62 — Bhavanipur, Bihar</span>
+        <span class="meta">ID: SS-DEMO001</span>
+      </div>
+      <div class="thread-item"><span class="thread-dot asha"></span><div class="thread-body"><div class="prov">Sunita · ASHA Worker (home visit)</div><div class="desc">Cough + mild fever. Paracetamol advised.</div><span class="tag">remembered</span></div></div>
+      <div class="thread-item" style="animation-delay:.15s"><span class="thread-dot doctor"></span><div class="thread-body"><div class="prov">Dr. R. Prasad · PHC Bhavanipur</div><div class="desc">Suspected dengue. Penicillin allergy noted.</div><span class="tag">remembered</span></div></div>
+      <div class="thread-item" style="animation-delay:.3s"><span class="thread-dot hospital"></span><div class="thread-body"><div class="prov">Dr. Meera Iyer · District Hospital, Patna</div><div class="desc">Dengue confirmed — recalled allergy, avoided NSAID.</div><span class="tag">recalled ✓</span></div></div>
+    </div>
+  </div>
+</header>
+
+<section id="problem">
+  <div class="section-head">
+    <span class="eyebrow">The India-specific gap</span>
+    <h2>India's rural healthcare has no shared memory</h2>
+    <p>ASHA workers, PHCs, private clinics, and district hospitals each hold a fragment of a patient's story — usually on paper, usually lost between visits.</p>
+  </div>
+  <div class="split">
+    <div class="card">
+      <h3 class="tag-bad">Today, without shared memory</h3>
+      <ul>
+        <li>An elderly or illiterate patient often can't recall their own diagnosis, allergy, or last prescription.</li>
+        <li>A district hospital repeats tests the PHC already ran days earlier.</li>
+        <li>A drug allergy noted at one clinic is invisible to the next — a real safety risk.</li>
+        <li>ASHA workers' home-visit notes rarely reach the doctor who sees the patient next.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="tag-good">With Setu Swasth</h3>
+      <ul>
+        <li>Every visit — home, PHC, hospital, pharmacy — is <code>remembered</code> permanently under the patient's own ID.</li>
+        <li>Any provider can <code>recall</code> the full history in seconds, in plain language.</li>
+        <li>Allergies and past diagnoses surface automatically, never left to memory.</li>
+        <li>The record improves and stays clean over time — corrected or erased on request, never silently lost.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="lifecycle">
+  <div class="section-head">
+    <span class="eyebrow">Built directly on Cognee's memory lifecycle</span>
+    <h2>Four Cognee calls, one continuous patient record</h2>
+    <p>Every patient gets their own Cognee dataset (their patient ID). These are the exact calls this app makes — visible live in the demo's Memory Lens.</p>
+  </div>
+  <div class="lifecycle">
+    <div class="life-card"><span class="num">01</span><h4>remember()</h4><p>Every visit note is ingested via <code>cognee.remember(text, session_id=patient_id)</code> and structured into the graph.</p></div>
+    <div class="life-card"><span class="num">02</span><h4>recall()</h4><p>A provider's question is answered via <code>cognee.recall(query, session_id=patient_id)</code>, routed across semantic + graph search.</p></div>
+    <div class="life-card"><span class="num">03</span><h4>improve()</h4><p><code>cognee.improve()</code> — memify — prunes stale entries and sharpens the graph as a patient's history grows.</p></div>
+    <div class="life-card"><span class="num">04</span><h4>forget()</h4><p><code>cognee.forget(dataset=patient_id)</code> lets a clinic correct or erase a record — memory is a choice, never a leak.</p></div>
+  </div>
+</section>
+
+<section id="demo">
+  <div class="section-head">
+    <span class="eyebrow">Try it for real</span>
+    <h2>A working patient record, wired to Cognee</h2>
+    <p>This is the real backend — register a patient, log a visit as an ASHA worker or doctor, then ask a question as a different provider and watch it recall the full history.</p>
+  </div>
+  <div class="demo-shell">
+    <div class="demo-tabs">
+      <div class="demo-tab active" data-tab="lookup">Patient lookup</div>
+      <div class="demo-tab" data-tab="visit">Log a visit</div>
+      <div class="demo-tab" data-tab="ask">Ask about history</div>
+    </div>
+    <div class="demo-body">
+      <div class="demo-main">
+
+        <div class="patient-picker">
+          <select id="patientSelect" onchange="onPatientChange()"></select>
+          <button class="btn-sm secondary" onclick="refreshPatients()">Refresh</button>
+          <button class="btn-sm danger" onclick="forgetPatient()">Forget this patient's memory</button>
+        </div>
+
+        <div class="consent-bar locked" id="consentBar">
+          <div class="consent-head"><span class="icon">🔒</span><span id="consentTitle">Patient consent required</span></div>
+          <div class="consent-sub" id="consentSub">Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time.</div>
+          <div class="consent-row" id="consentStep1">
+            <input id="providerName" placeholder="Your name (e.g. Dr. Anjali Rao)" style="min-width:220px;">
+            <button class="btn-sm" onclick="requestAccess()">Request access OTP</button>
+          </div>
+          <div class="consent-row" id="consentStep2" style="display:none; margin-top:10px;">
+            <input id="otpInput" placeholder="Enter 6-digit OTP" style="width:160px;">
+            <button class="btn-sm" onclick="verifyAccess()">Verify & unlock</button>
+          </div>
+          <div id="otpDemoBanner"></div>
+          <div id="otpModeHint" class="consent-sub" style="margin-top:6px;font-size:0.72rem;opacity:0.75;">Tip: the seeded demo patient has no email on file, so OTPs show on-screen. Register a new patient with a real email above to see live email delivery (requires SMTP_* set in .env).</div>
+        </div>
+
+        <!-- LOOKUP -->
+        <div class="panel active" id="panel-lookup">
+          <div class="patient-card" id="patientCard"><span class="n">Select or register a patient</span></div>
+          <div id="timelineWrap"></div>
+          <hr style="margin:20px 0;border:none;border-top:1px solid var(--line)">
+          <h4 style="font-family:'Fraunces',serif;margin-bottom:10px;">Register a new patient</h4>
+          <div class="field-row">
+            <div class="field"><label>Full name</label><input id="newName" placeholder="e.g. Ram Singh"></div>
+            <div class="field"><label>Age</label><input id="newAge" type="number" placeholder="e.g. 45"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Gender</label><input id="newGender" placeholder="Male / Female / Other"></div>
+            <div class="field"><label>Village / district</label><input id="newVillage" placeholder="e.g. Rampur, UP"></div>
+          </div>
+          <div class="field-row">
+            <div class="field"><label>Email (for real-time OTP delivery)</label><input id="newEmail" type="email" placeholder="e.g. patient@example.com"></div>
+            <div class="field"><label>Phone (display only)</label><input id="newPhone" placeholder="e.g. 98XXXXXX10"></div>
+          </div>
+          <button class="btn-sm" onclick="createPatient()">Register patient</button>
+        </div>
+
+        <!-- VISIT -->
+        <div class="panel" id="panel-visit">
+          <div class="field-row">
+            <div class="field"><label>Provider name</label><input id="vProvider" placeholder="e.g. Dr. Anjali Rao"></div>
+            <div class="field"><label>Provider type</label>
+              <select id="vType">
+                <option>ASHA Worker</option><option>PHC Nurse</option><option>Doctor</option><option>Pharmacist</option><option>District Hospital</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Facility</label><input id="vFacility" placeholder="e.g. PHC Bhavanipur / Home visit"></div>
+          <div class="field"><label>Symptoms</label><textarea id="vSymptoms" rows="2" placeholder="e.g. Fever, joint pain"></textarea></div>
+          <div class="field"><label>Diagnosis</label><input id="vDiagnosis" placeholder="e.g. Suspected dengue"></div>
+          <div class="field"><label>Prescription</label><input id="vPrescription" placeholder="e.g. Paracetamol 500mg, avoid NSAIDs"></div>
+          <div class="field"><label>Allergy noted (if any)</label><input id="vAllergy" placeholder="e.g. Penicillin allergy"></div>
+          <div class="field"><label>Notes</label><textarea id="vNotes" rows="2" placeholder="Anything else for the next provider"></textarea></div>
+          <button class="btn-sm" onclick="logVisit()">Save visit → remember()</button>
+        </div>
+
+        <!-- ASK -->
+        <div class="panel" id="panel-ask">
+          <p style="font-size:0.88rem;color:#5c6961;margin-bottom:12px;">Ask as if you're a new provider who has never met this patient before.</p>
+          <div class="ask-box">
+            <input id="askInput" placeholder="e.g. Does this patient have any drug allergies?">
+            <button class="btn-sm" onclick="askQuestion()">Ask → recall()</button>
+          </div>
+          <div class="ask-box" style="margin-top:8px;">
+            <button class="btn-sm secondary" onclick="quickAsk('Does this patient have any known drug allergies?')">Allergies?</button>
+            <button class="btn-sm secondary" onclick="quickAsk('Summarize this patient\'s full visit history.')">Full history</button>
+            <button class="btn-sm secondary" onclick="quickAsk('What was the most recent diagnosis and prescription?')">Latest diagnosis</button>
+            <button class="btn-sm secondary" onclick="quickAsk('Cross-check every medicine prescribed across all visits against this patient\'s known allergies and flag any conflict, even if the conflicting visits were with different providers.')">⚠ Cross-visit conflict check</button>
+          </div>
+          <div class="answer-box" id="answerBox" style="display:none;"></div>
+        </div>
+
+      </div>
+      <div class="demo-side">
+        <div class="lens-title"><span class="pulse"></span>Memory Lens</div>
+        <div class="lens-sub" id="engineNote">Live feed of every Cognee call this app makes</div>
+        <div class="lens-log" id="lensLog"><div class="lens-empty">No memory activity yet — register a patient or log a visit.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="journey">
+  <div class="section-head">
+    <span class="eyebrow">A real patient journey</span>
+    <h2>What this replaces, end to end</h2>
+  </div>
+  <div class="journey">
+    <div class="journey-step"><div class="ic">🏠</div><h4>ASHA home visit</h4><p>Symptoms logged on the spot — remembered instantly, not lost on a paper slip.</p><span class="journey-arrow">→</span></div>
+    <div class="journey-step"><div class="ic">🏥</div><h4>PHC visit</h4><p>Doctor recalls the ASHA note automatically — no re-explaining symptoms.</p><span class="journey-arrow">→</span></div>
+    <div class="journey-step"><div class="ic">🚑</div><h4>District hospital</h4><p>Full history recalled instantly — allergy flagged before a wrong prescription happens.</p><span class="journey-arrow">→</span></div>
+    <div class="journey-step"><div class="ic">💊</div><h4>Pharmacy / follow-up</h4><p>Every future visit adds to the same permanent, patient-owned memory.</p></div>
+  </div>
+</section>
+
+<section id="stack">
+  <div class="section-head">
+    <span class="eyebrow">Under the hood</span>
+    <h2>Built on the real Cognee + Claude stack</h2>
+  </div>
+  <div class="stack-row">
+    <span class="chip">Cognee — hybrid graph + vector patient memory</span>
+    <span class="chip">Claude (claude-sonnet-4-6) — grounded clinical synthesis</span>
+    <span class="chip">FastAPI backend</span>
+    <span class="chip">Built with Cognee's Claude Code integration</span>
+    <span class="chip">Self-hosted · patient-owned data</span>
+  </div>
+</section>
+
+<footer>
+  <div class="brand" style="justify-content:center;"><span class="mark"></span>Setu Swasth</div>
+  <p>सेतु स्वस्थ — memory for a healthcare system that was never given one. Built for the Cognee Memory Hackathon.</p>
+</footer>
+
+<script>
+const API_BASE = window.ANAMNIS_API_BASE || location.origin;
+
+/* ---------------- tabs ---------------- */
+document.querySelectorAll('.demo-tab').forEach(tab=>{
+  tab.addEventListener('click', ()=>{
+    document.querySelectorAll('.demo-tab').forEach(t=>t.classList.remove('active'));
+    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById('panel-'+tab.dataset.tab).classList.add('active');
+  });
+});
+
+/* ---------------- health ---------------- */
+async function checkHealth(){
+  try{
+    const r = await fetch(API_BASE + '/api/health');
+    const d = await r.json();
+    document.getElementById('statusDot').classList.remove('off');
+    document.getElementById('statusText').textContent = 'engine: ' + d.engine;
+    document.getElementById('engineNote').textContent = 'Engine: ' + d.engine + (d.engine==='fallback-in-memory' ? ' (set LLM_API_KEY for full Cognee graph)' : '');
+  }catch(e){
+    document.getElementById('statusDot').classList.add('off');
+    document.getElementById('statusText').textContent = 'backend offline';
+    document.getElementById('engineNote').textContent = 'Start the backend (see README) to activate memory.';
+  }
+}
+
+/* ---------------- patients ---------------- */
+let currentPid = null;
+let accessToken = null;
+
+function resetConsentUI(){
+  accessToken = null;
+  document.getElementById('consentBar').className = 'consent-bar locked';
+  document.getElementById('consentTitle').textContent = 'Patient consent required';
+  document.getElementById('consentSub').textContent = "Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time (or shown on screen if no email/SMTP is configured).";
+  document.getElementById('consentStep1').style.display = 'flex';
+  document.getElementById('consentStep2').style.display = 'none';
+  document.getElementById('otpDemoBanner').innerHTML = '';
+  const hint = document.getElementById('otpModeHint');
+  if (hint) hint.style.display = 'block';
+}
+
+async function requestAccess(){
+  const name = document.getElementById('providerName').value.trim();
+  if(!name){ alert('Enter your name first'); return; }
+  if(!currentPid){ alert('Select a patient first'); return; }
+  try{
+    const r = await fetch(API_BASE + '/api/patient/' + currentPid + '/request-access', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({provider_name:name})});
+    const d = await r.json();
+    if(!r.ok || !d.ok){ alert((d && d.detail) || 'Could not request access'); return; }
+    document.getElementById('consentStep2').style.display = 'flex';
+    if(d.delivery === 'email'){
+      document.getElementById('otpDemoBanner').innerHTML = `<div class="otp-demo">✉️ ${d.message}</div>`;
+    } else {
+      document.getElementById('otpDemoBanner').innerHTML = `<div class="otp-demo">${d.message} On-screen OTP: <b>${d.demo_otp}</b></div>`;
+    }
+  }catch(e){ alert('Backend unreachable'); }
+}
+
+async function verifyAccess(){
+  const name = document.getElementById('providerName').value.trim();
+  const otp = document.getElementById('otpInput').value.trim();
+  if(!otp){ return; }
+  try{
+    const r = await fetch(API_BASE + '/api/patient/' + currentPid + '/verify-access', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({otp, provider_name:name})});
+    const d = await r.json();
+    if(!r.ok || !d.ok){ alert((d && d.detail) || 'Invalid OTP'); return; }
+    accessToken = d.access_token;
+    document.getElementById('consentBar').className = 'consent-bar unlocked';
+    document.getElementById('consentTitle').textContent = '🔓 Access granted for ' + name + ' (20 min session)';
+    document.getElementById('consentSub').textContent = 'Consent verified — this session can now view history and log visits. Recorded in the audit log.';
+    document.getElementById('consentStep1').style.display = 'none';
+    document.getElementById('consentStep2').style.display = 'none';
+    document.getElementById('otpDemoBanner').innerHTML = '';
+    document.getElementById('otpModeHint').style.display = 'none';
+    await loadPatient(currentPid);
+  }catch(e){ alert('Backend unreachable'); }
+}
+
+function authHeaders(){
+  const h = {'Content-Type':'application/json'};
+  if(accessToken) h['X-Access-Token'] = accessToken;
+  return h;
+}
+async function refreshPatients(){
+  try{
+    const r = await fetch(API_BASE + '/api/patients');
+    const d = await r.json();
+    const sel = document.getElementById('patientSelect');
+    sel.innerHTML = '';
+    d.patients.forEach(p=>{
+      const opt = document.createElement('option');
+      opt.value = p.patient_id;
+      opt.textContent = `${p.name} (${p.patient_id})`;
+      sel.appendChild(opt);
+    });
+    if(d.patients.length && !currentPid){ currentPid = d.patients[0].patient_id; sel.value = currentPid; }
+    if(currentPid){ sel.value = currentPid; await loadPatient(currentPid); }
+  }catch(e){}
+}
+function onPatientChange(){
+  currentPid = document.getElementById('patientSelect').value;
+  resetConsentUI();
+  loadPatient(currentPid);
+}
+async function loadPatient(pid){
+  if(!pid) return;
+  try{
+    const r = await fetch(API_BASE + '/api/patient/' + pid);
+    const d = await r.json();
+    const p = d.patient;
+    document.getElementById('patientCard').innerHTML =
+      `<div><div class="n">${p.name}</div><div class="m">${p.age||'—'} yrs · ${p.gender||'—'} · ${p.village||'—'}</div></div>
+       <div class="m">ID: ${p.patient_id} · ${d.visit_count} visit(s) recorded</div>`;
+    const wrap = document.getElementById('timelineWrap');
+    if(!accessToken){
+      wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">🔒 Request and verify access above to view this patient\'s visit history.</p>';
+      pollMemoryLog();
+      return;
+    }
+    const tr = await fetch(API_BASE + '/api/patient/' + pid + '/timeline', {headers: authHeaders()});
+    if(tr.status === 403){
+      wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">🔒 Access session expired — request a new OTP above.</p>';
+      pollMemoryLog(); return;
+    }
+    const td = await tr.json();
+    if(!td.visits.length){ wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">No visits recorded yet.</p>'; return; }
+    wrap.innerHTML = td.visits.slice().reverse().map(v=>{
+      const dotClass = v.provider_type.toLowerCase().includes('asha') ? 'asha' : (v.provider_type.toLowerCase().includes('hospital') ? 'hospital' : 'doctor');
+      return `<div class="timeline-item">
+        <span class="timeline-dot" style="background:${dotClass==='asha'?'#d4a24c':dotClass==='hospital'?'#c1673f':'#3f7a5a'}"></span>
+        <div class="timeline-body">
+          <div class="p">${v.provider_name} · ${v.provider_type}${v.facility?(' — '+v.facility):''}</div>
+          <div class="d">${v.symptoms?('Symptoms: '+v.symptoms+'. '):''}${v.diagnosis?('Diagnosis: '+v.diagnosis+'. '):''}${v.prescription?('Rx: '+v.prescription+'. '):''}${v.notes?v.notes:''}</div>
+          ${v.allergies_noted ? `<span class="allergy-flag">⚠ Allergy: ${v.allergies_noted}</span>` : ''}
+          <span class="date">${v.date}</span>
+        </div>
+      </div>`;
+    }).join('');
+  }catch(e){}
+  pollMemoryLog();
+}
+
+async function createPatient(){
+  const name = document.getElementById('newName').value.trim();
+  if(!name){ alert('Enter a name'); return; }
+  const body = {
+    name, age: parseInt(document.getElementById('newAge').value)||null,
+    gender: document.getElementById('newGender').value||null,
+    village: document.getElementById('newVillage').value||null,
+    email: document.getElementById('newEmail').value.trim()||null,
+    phone: document.getElementById('newPhone').value.trim()||null
+  };
+  const r = await fetch(API_BASE + '/api/patients', {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(body)});
+  const d = await r.json();
+  if(!d.ok){ alert(d.detail || 'Could not register patient'); return; }
+  if(d.ok){ currentPid = d.patient.patient_id; await refreshPatients(); pollMemoryLog(); }
+}
+
+async function logVisit(){
+  if(!currentPid){ alert('Select a patient first'); return; }
+  if(!accessToken){ alert('Request and verify patient access (OTP) before logging a visit.'); return; }
+  const body = {
+    provider_name: document.getElementById('vProvider').value || 'Unnamed provider',
+    provider_type: document.getElementById('vType').value,
+    facility: document.getElementById('vFacility').value,
+    symptoms: document.getElementById('vSymptoms').value,
+    diagnosis: document.getElementById('vDiagnosis').value,
+    prescription: document.getElementById('vPrescription').value,
+    allergies_noted: document.getElementById('vAllergy').value,
+    notes: document.getElementById('vNotes').value,
+  };
+  const r = await fetch(API_BASE + '/api/patient/' + currentPid + '/visit', {method:'POST', headers: authHeaders(), body: JSON.stringify(body)});
+  if(r.status === 403){ alert('Access session expired — request a new OTP.'); return; }
+  const d = await r.json();
+  if(d.ok){
+    ['vProvider','vFacility','vSymptoms','vDiagnosis','vPrescription','vAllergy','vNotes'].forEach(id=>document.getElementById(id).value='');
+    await loadPatient(currentPid);
+    document.querySelector('[data-tab="lookup"]').click();
+  }
+}
+
+async function askQuestion(){
+  const q = document.getElementById('askInput').value.trim();
+  if(!q || !currentPid) return;
+  if(!accessToken){ alert('Request and verify patient access (OTP) before asking about their history.'); return; }
+  const box = document.getElementById('answerBox');
+  box.style.display='block'; box.className='answer-box loading'; box.textContent='Recalling memory…';
+  try{
+    const r = await fetch(API_BASE + '/api/patient/' + currentPid + '/ask', {method:'POST', headers: authHeaders(), body: JSON.stringify({question:q})});
+    if(r.status === 403){ box.className='answer-box'; box.textContent='Access session expired — request a new OTP.'; return; }
+    const d = await r.json();
+    box.className='answer-box'; box.textContent = d.answer;
+  }catch(e){
+    box.className='answer-box'; box.textContent = 'Backend unreachable.';
+  }
+  pollMemoryLog();
+}
+function quickAsk(q){ document.getElementById('askInput').value=q; askQuestion(); }
+
+async function forgetPatient(){
+  if(!currentPid) return;
+  if(!accessToken){ alert('Request and verify patient access (OTP) before erasing memory.'); return; }
+  if(!confirm('Erase this patient\'s entire memory? This cannot be undone.')) return;
+  const r = await fetch(API_BASE + '/api/patient/' + currentPid + '/forget', {method:'POST', headers: authHeaders(), body: JSON.stringify({reason:'Manual wipe from demo UI'})});
+  if(r.status === 403){ alert('Access session expired — request a new OTP.'); return; }
+  await loadPatient(currentPid);
+  pollMemoryLog();
+}
+
+/* ---------------- memory lens ---------------- */
+async function pollMemoryLog(){
+  try{
+    const r = await fetch(API_BASE + '/api/memory-log?limit=25');
+    const d = await r.json();
+    const log = document.getElementById('lensLog');
+    if(!d.log.length){ log.innerHTML = '<div class="lens-empty">No memory activity yet.</div>'; return; }
+    log.innerHTML = d.log.map(e=>{
+      const t = new Date(e.ts*1000).toLocaleTimeString();
+      return `<div class="lens-entry">
+        <span class="lens-op ${e.op}">${e.op}()</span> · <span style="font-size:0.7rem;color:#8b968f;">${e.patient_id} · ${t}</span>
+        <div class="lens-detail">${e.detail}</div>
+      </div>`;
+    }).join('');
+  }catch(e){}
+}
+
+checkHealth();
+refreshPatients();
+setInterval(pollMemoryLog, 6000);
+</script>
+</body>
+</html>
