@@ -236,28 +236,29 @@
 <nav>
   <div class="brand"><span class="mark"></span>Setu Swasth</div>
   <div class="navlinks">
-    <span onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">The problem</span>
-    <span onclick="document.getElementById('lifecycle').scrollIntoView({behavior:'smooth'})">How it works</span>
-    <span onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Live demo</span>
-    <span onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})">Patient journey</span>
+    <span onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})" data-i18n="nav_problem">The problem</span>
+    <span onclick="document.getElementById('lifecycle').scrollIntoView({behavior:'smooth'})" data-i18n="nav_how">How it works</span>
+    <span onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})" data-i18n="nav_demo">Live demo</span>
+    <span onclick="document.getElementById('journey').scrollIntoView({behavior:'smooth'})" data-i18n="nav_journey">Patient journey</span>
   </div>
+  <button class="btn-sm secondary" id="langToggle" onclick="toggleLang()" style="margin-right:8px;">हिं / EN</button>
   <div class="status-pill"><span class="dot" id="statusDot"></span><span id="statusText">checking engine…</span></div>
 </nav>
 
 <header class="hero">
   <div class="hero-grid">
     <div>
-      <span class="eyebrow">Persistent patient memory · built on Cognee + Claude</span>
-      <h1>One patient.<br>Every provider.<br><em>One memory that never resets.</em></h1>
-      <p class="lede">In rural India, a patient sees an ASHA worker, a PHC doctor, and a district hospital — each blind to what the others know. Setu Swasth gives every provider instant access to that patient's full history, remembered permanently in Cognee's hybrid graph memory and recalled the moment it's needed.</p>
+      <span class="eyebrow" data-i18n="hero_eyebrow">Persistent patient memory · built on Cognee + Claude</span>
+      <h1 data-i18n="hero_h1">One patient.<br>Every provider.<br><em>One memory that never resets.</em></h1>
+      <p class="lede" data-i18n="hero_lede">In rural India, a patient sees an ASHA worker, a PHC doctor, and a district hospital — each blind to what the others know. Setu Swasth gives every provider instant access to that patient's full history, remembered permanently in Cognee's hybrid graph memory and recalled the moment it's needed.</p>
       <div class="cta-row">
-        <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})">Open the live patient demo →</button>
-        <button class="btn btn-ghost" onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})">Why this matters</button>
+        <button class="btn btn-primary" onclick="document.getElementById('demo').scrollIntoView({behavior:'smooth'})" data-i18n="hero_cta1">Open the live patient demo →</button>
+        <button class="btn btn-ghost" onclick="document.getElementById('problem').scrollIntoView({behavior:'smooth'})" data-i18n="hero_cta2">Why this matters</button>
       </div>
       <div class="stat-row">
-        <div class="stat">3<span>disconnected providers, 1 patient</span></div>
-        <div class="stat">0<span>shared records, today</span></div>
-        <div class="stat">100%<span>recalled instantly, with Setu Swasth</span></div>
+        <div class="stat">3<span data-i18n="hero_stat1">disconnected providers, 1 patient</span></div>
+        <div class="stat">0<span data-i18n="hero_stat2">shared records, today</span></div>
+        <div class="stat">100%<span data-i18n="hero_stat3">recalled instantly, with Setu Swasth</span></div>
       </div>
     </div>
     <div class="thread-card">
@@ -274,27 +275,27 @@
 
 <section id="problem">
   <div class="section-head">
-    <span class="eyebrow">The India-specific gap</span>
-    <h2>India's rural healthcare has no shared memory</h2>
-    <p>ASHA workers, PHCs, private clinics, and district hospitals each hold a fragment of a patient's story — usually on paper, usually lost between visits.</p>
+    <span class="eyebrow" data-i18n="problem_eyebrow">The India-specific gap</span>
+    <h2 data-i18n="problem_h2">India's rural healthcare has no shared memory</h2>
+    <p data-i18n="problem_p">ASHA workers, PHCs, private clinics, and district hospitals each hold a fragment of a patient's story — usually on paper, usually lost between visits.</p>
   </div>
   <div class="split">
     <div class="card">
-      <h3 class="tag-bad">Today, without shared memory</h3>
+      <h3 class="tag-bad" data-i18n="problem_bad_h3">Today, without shared memory</h3>
       <ul>
-        <li>An elderly or illiterate patient often can't recall their own diagnosis, allergy, or last prescription.</li>
-        <li>A district hospital repeats tests the PHC already ran days earlier.</li>
-        <li>A drug allergy noted at one clinic is invisible to the next — a real safety risk.</li>
-        <li>ASHA workers' home-visit notes rarely reach the doctor who sees the patient next.</li>
+        <li data-i18n="problem_bad_1">An elderly or illiterate patient often can't recall their own diagnosis, allergy, or last prescription.</li>
+        <li data-i18n="problem_bad_2">A district hospital repeats tests the PHC already ran days earlier.</li>
+        <li data-i18n="problem_bad_3">A drug allergy noted at one clinic is invisible to the next — a real safety risk.</li>
+        <li data-i18n="problem_bad_4">ASHA workers' home-visit notes rarely reach the doctor who sees the patient next.</li>
       </ul>
     </div>
     <div class="card">
-      <h3 class="tag-good">With Setu Swasth</h3>
+      <h3 class="tag-good" data-i18n="problem_good_h3">With Setu Swasth</h3>
       <ul>
-        <li>Every visit — home, PHC, hospital, pharmacy — is <code>remembered</code> permanently under the patient's own ID.</li>
-        <li>Any provider can <code>recall</code> the full history in seconds, in plain language.</li>
-        <li>Allergies and past diagnoses surface automatically, never left to memory.</li>
-        <li>The record improves and stays clean over time — corrected or erased on request, never silently lost.</li>
+        <li data-i18n="problem_good_1">Every visit — home, PHC, hospital, pharmacy — is <code>remembered</code> permanently under the patient's own ID.</li>
+        <li data-i18n="problem_good_2">Any provider can <code>recall</code> the full history in seconds, in plain language.</li>
+        <li data-i18n="problem_good_3">Allergies and past diagnoses surface automatically, never left to memory.</li>
+        <li data-i18n="problem_good_4">The record improves and stays clean over time — corrected or erased on request, never silently lost.</li>
       </ul>
     </div>
   </div>
@@ -331,29 +332,34 @@
 
         <div class="patient-picker">
           <select id="patientSelect" onchange="onPatientChange()"></select>
-          <button class="btn-sm secondary" onclick="refreshPatients()">Refresh</button>
-          <button class="btn-sm danger" onclick="forgetPatient()">Forget this patient's memory</button>
+          <button class="btn-sm secondary" onclick="refreshPatients()" data-i18n="btn_refresh">Refresh</button>
+          <button class="btn-sm danger" onclick="forgetPatient()" data-i18n="btn_forget">Forget this patient's memory</button>
         </div>
 
         <div class="consent-bar locked" id="consentBar">
-          <div class="consent-head"><span class="icon">🔒</span><span id="consentTitle">Patient consent required</span></div>
-          <div class="consent-sub" id="consentSub">Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time.</div>
+          <div class="consent-head"><span class="icon">🔒</span><span id="consentTitle" data-i18n="consent_title">Patient consent required</span></div>
+          <div class="consent-sub" id="consentSub" data-i18n="consent_sub">Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time.</div>
           <div class="consent-row" id="consentStep1">
-            <input id="providerName" placeholder="Your name (e.g. Dr. Anjali Rao)" style="min-width:220px;">
-            <button class="btn-sm" onclick="requestAccess()">Request access OTP</button>
+            <input id="providerName" placeholder="Your name (e.g. Dr. Anjali Rao)" data-i18n-placeholder="consent_name_ph" style="min-width:220px;">
+            <button class="btn-sm" onclick="requestAccess()" data-i18n="consent_request_btn">Request access OTP</button>
           </div>
           <div class="consent-row" id="consentStep2" style="display:none; margin-top:10px;">
-            <input id="otpInput" placeholder="Enter 6-digit OTP" style="width:160px;">
-            <button class="btn-sm" onclick="verifyAccess()">Verify & unlock</button>
+            <input id="otpInput" placeholder="Enter 6-digit OTP" data-i18n-placeholder="consent_otp_ph" style="width:160px;">
+            <button class="btn-sm" onclick="verifyAccess()" data-i18n="consent_verify_btn">Verify & unlock</button>
           </div>
           <div id="otpDemoBanner"></div>
-          <div id="otpModeHint" class="consent-sub" style="margin-top:6px;font-size:0.72rem;opacity:0.75;">Tip: the seeded demo patient has no email on file, so OTPs show on-screen. Register a new patient with a real email above to see live email delivery (requires SMTP_* set in .env).</div>
+          <div id="otpModeHint" class="consent-sub" data-i18n="consent_hint" style="margin-top:6px;font-size:0.72rem;opacity:0.75;">Tip: the seeded demo patient has no email on file, so OTPs show on-screen. Register a new patient with a real email above to see live email delivery (requires SMTP_* set in .env).</div>
         </div>
 
         <!-- LOOKUP -->
         <div class="panel active" id="panel-lookup">
           <div class="patient-card" id="patientCard"><span class="n">Select or register a patient</span></div>
           <div id="timelineWrap"></div>
+          <div id="graphSection" style="display:none;">
+            <div class="lens-title" style="margin-top:18px;"><span class="pulse"></span>Memory Graph</div>
+            <p style="font-size:0.78rem;color:#5c6961;margin:4px 0 10px;">Entities and relationships derived from this patient's visits. Shared nodes (same allergy, same provider) across different visits are what let a new provider be warned about something noted somewhere else entirely — that's cross-visit memory, visualized.</p>
+            <div id="graphWrap" style="overflow-x:auto;"></div>
+          </div>
           <hr style="margin:20px 0;border:none;border-top:1px solid var(--line)">
           <h4 style="font-family:'Fraunces',serif;margin-bottom:10px;">Register a new patient</h4>
           <div class="field-row">
@@ -448,8 +454,102 @@
   <p>सेतु स्वस्थ — memory for a healthcare system that was never given one. Built for the Cognee Memory Hackathon.</p>
 </footer>
 
+<script src="config.js"></script>
 <script>
 const API_BASE = window.ANAMNIS_API_BASE || location.origin;
+
+// --------------------------------------------------------------------------
+// Basic English/Hindi toggle for the patient-facing surface — the hero,
+// problem framing, and the consent/OTP flow a patient (or the family member
+// helping them) would actually read. Not a full i18n system; deliberately
+// simple, no external library, and no localStorage (resets to English on
+// reload) to keep the single-file app dependency-free.
+// --------------------------------------------------------------------------
+let currentLang = 'en';
+const I18N = {
+  en: {
+    nav_problem: "The problem", nav_how: "How it works", nav_demo: "Live demo", nav_journey: "Patient journey",
+    hero_eyebrow: "Persistent patient memory · built on Cognee + Claude",
+    hero_h1: "One patient.<br>Every provider.<br><em>One memory that never resets.</em>",
+    hero_lede: "In rural India, a patient sees an ASHA worker, a PHC doctor, and a district hospital — each blind to what the others know. Setu Swasth gives every provider instant access to that patient's full history, remembered permanently in Cognee's hybrid graph memory and recalled the moment it's needed.",
+    hero_cta1: "Open the live patient demo →", hero_cta2: "Why this matters",
+    hero_stat1: "disconnected providers, 1 patient", hero_stat2: "shared records, today", hero_stat3: "recalled instantly, with Setu Swasth",
+    problem_eyebrow: "The India-specific gap", problem_h2: "India's rural healthcare has no shared memory",
+    problem_p: "ASHA workers, PHCs, private clinics, and district hospitals each hold a fragment of a patient's story — usually on paper, usually lost between visits.",
+    problem_bad_h3: "Today, without shared memory",
+    problem_bad_1: "An elderly or illiterate patient often can't recall their own diagnosis, allergy, or last prescription.",
+    problem_bad_2: "A district hospital repeats tests the PHC already ran days earlier.",
+    problem_bad_3: "A drug allergy noted at one clinic is invisible to the next — a real safety risk.",
+    problem_bad_4: "ASHA workers' home-visit notes rarely reach the doctor who sees the patient next.",
+    problem_good_h3: "With Setu Swasth",
+    problem_good_1: "Every visit — home, PHC, hospital, pharmacy — is <code>remembered</code> permanently under the patient's own ID.",
+    problem_good_2: "Any provider can <code>recall</code> the full history in seconds, in plain language.",
+    problem_good_3: "Allergies and past diagnoses surface automatically, never left to memory.",
+    problem_good_4: "The record improves and stays clean over time — corrected or erased on request, never silently lost.",
+    btn_refresh: "Refresh", btn_forget: "Forget this patient's memory",
+    consent_title: "Patient consent required",
+    consent_sub: "Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time (or shown on screen if no email/SMTP is configured).",
+    consent_name_ph: "Your name (e.g. Dr. Anjali Rao)", consent_request_btn: "Request access OTP",
+    consent_otp_ph: "Enter 6-digit OTP", consent_verify_btn: "Verify & unlock",
+    consent_hint: "Tip: the seeded demo patient has no email on file, so OTPs show on-screen. Register a new patient with a real email above to see live email delivery (requires SMTP_* set in .env).",
+    consent_granted_prefix: "🔓 Access granted for ", consent_granted_suffix: " (20 min session)",
+    consent_verified: "Consent verified — this session can now view history and log visits. Recorded in the audit log.",
+  },
+  hi: {
+    nav_problem: "समस्या", nav_how: "यह कैसे काम करता है", nav_demo: "लाइव डेमो", nav_journey: "मरीज़ की यात्रा",
+    hero_eyebrow: "स्थायी रोगी स्मृति · Cognee + Claude पर निर्मित",
+    hero_h1: "एक मरीज़।<br>हर प्रदाता।<br><em>एक स्मृति जो कभी नहीं मिटती।</em>",
+    hero_lede: "ग्रामीण भारत में, एक मरीज़ आशा कार्यकर्ता, पीएचसी डॉक्टर और ज़िला अस्पताल से मिलता है — हर कोई दूसरे की जानकारी से अनजान। सेतु स्वस्थ हर प्रदाता को मरीज़ के पूरे इतिहास तक तुरंत पहुँच देता है, जो Cognee की हाइब्रिड ग्राफ़ मेमोरी में स्थायी रूप से याद रखा जाता है।",
+    hero_cta1: "लाइव मरीज़ डेमो खोलें →", hero_cta2: "यह क्यों ज़रूरी है",
+    hero_stat1: "असंबद्ध प्रदाता, 1 मरीज़", hero_stat2: "साझा रिकॉर्ड, आज", hero_stat3: "सेतु स्वस्थ के साथ तुरंत याद",
+    problem_eyebrow: "भारत-विशिष्ट अंतर", problem_h2: "भारत की ग्रामीण स्वास्थ्य सेवा में कोई साझा स्मृति नहीं है",
+    problem_p: "आशा कार्यकर्ता, पीएचसी, निजी क्लीनिक और ज़िला अस्पताल — हर एक के पास मरीज़ की कहानी का केवल एक टुकड़ा होता है, आमतौर पर काग़ज़ पर, और अक्सर खो जाता है।",
+    problem_bad_h3: "आज, साझा स्मृति के बिना",
+    problem_bad_1: "एक बुज़ुर्ग या अनपढ़ मरीज़ अक्सर अपना निदान, एलर्जी या पिछली दवा याद नहीं रख पाता।",
+    problem_bad_2: "ज़िला अस्पताल वही जाँचें दोहराता है जो पीएचसी पहले ही कर चुका होता है।",
+    problem_bad_3: "एक क्लीनिक में दर्ज दवा एलर्जी अगले प्रदाता को दिखाई नहीं देती — एक वास्तविक सुरक्षा जोखिम।",
+    problem_bad_4: "आशा कार्यकर्ताओं के घर-भ्रमण नोट्स शायद ही अगले डॉक्टर तक पहुँचते हैं।",
+    problem_good_h3: "सेतु स्वस्थ के साथ",
+    problem_good_1: "हर मुलाक़ात — घर, पीएचसी, अस्पताल, फ़ार्मेसी — मरीज़ की अपनी आईडी के तहत स्थायी रूप से <code>याद</code> रखी जाती है।",
+    problem_good_2: "कोई भी प्रदाता कुछ ही सेकंड में पूरा इतिहास <code>प्राप्त</code> कर सकता है, सरल भाषा में।",
+    problem_good_3: "एलर्जी और पिछले निदान अपने आप सामने आते हैं, कभी याददाश्त पर नहीं छोड़े जाते।",
+    problem_good_4: "रिकॉर्ड समय के साथ बेहतर और स्वच्छ रहता है — अनुरोध पर सुधारा या मिटाया जाता है, कभी चुपचाप खोया नहीं जाता।",
+    btn_refresh: "रीफ़्रेश करें", btn_forget: "इस मरीज़ की स्मृति मिटाएँ",
+    consent_title: "मरीज़ की सहमति आवश्यक है",
+    consent_sub: "भारत के DPDP अधिनियम के अनुसार, किसी प्रदाता को मरीज़ का रिकॉर्ड देखने या उसमें जोड़ने से पहले मरीज़ की सहमति लेनी होगी। अपना नाम दर्ज करें और OTP का अनुरोध करें — यह मरीज़ को तुरंत ईमेल किया जाएगा (या यदि ईमेल/SMTP सेट नहीं है तो स्क्रीन पर दिखाया जाएगा)।",
+    consent_name_ph: "आपका नाम (जैसे डॉ. अंजलि राव)", consent_request_btn: "पहुँच OTP का अनुरोध करें",
+    consent_otp_ph: "6-अंकों का OTP दर्ज करें", consent_verify_btn: "सत्यापित करें और खोलें",
+    consent_hint: "सुझाव: सीड किए गए डेमो मरीज़ के पास कोई ईमेल दर्ज नहीं है, इसलिए OTP स्क्रीन पर दिखेगा। असली ईमेल दे कर एक नया मरीज़ पंजीकृत करें और वास्तविक ईमेल डिलीवरी देखें (.env में SMTP_* सेट होना ज़रूरी है)।",
+    consent_granted_prefix: "🔓 पहुँच स्वीकृत — ", consent_granted_suffix: " (20 मिनट का सत्र)",
+    consent_verified: "सहमति सत्यापित — यह सत्र अब इतिहास देख सकता है और मुलाक़ातें दर्ज कर सकता है। ऑडिट लॉग में दर्ज किया गया।",
+  }
+};
+
+function t(key){ return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key; }
+
+function applyLang(){
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (I18N[currentLang] && I18N[currentLang][key] !== undefined) el.innerHTML = I18N[currentLang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (I18N[currentLang] && I18N[currentLang][key] !== undefined) el.setAttribute('placeholder', I18N[currentLang][key]);
+  });
+  document.documentElement.lang = currentLang;
+  const btn = document.getElementById('langToggle');
+  if (btn) btn.textContent = currentLang === 'en' ? 'हिं / EN' : 'EN / हिं';
+}
+
+function toggleLang(){
+  currentLang = currentLang === 'en' ? 'hi' : 'en';
+  applyLang();
+  // Keep any already-rendered dynamic consent-bar text (post request/verify) in sync too.
+  if (accessToken) {
+    document.getElementById('consentSub').textContent = t('consent_verified');
+  }
+}
+
 
 /* ---------------- tabs ---------------- */
 document.querySelectorAll('.demo-tab').forEach(tab=>{
@@ -483,8 +583,8 @@ let accessToken = null;
 function resetConsentUI(){
   accessToken = null;
   document.getElementById('consentBar').className = 'consent-bar locked';
-  document.getElementById('consentTitle').textContent = 'Patient consent required';
-  document.getElementById('consentSub').textContent = "Per India's DPDP Act, a provider must have the patient's consent before viewing or adding to their record. Enter your name and request an OTP — it will be emailed to the patient in real time (or shown on screen if no email/SMTP is configured).";
+  document.getElementById('consentTitle').textContent = t('consent_title');
+  document.getElementById('consentSub').textContent = t('consent_sub');
   document.getElementById('consentStep1').style.display = 'flex';
   document.getElementById('consentStep2').style.display = 'none';
   document.getElementById('otpDemoBanner').innerHTML = '';
@@ -519,8 +619,8 @@ async function verifyAccess(){
     if(!r.ok || !d.ok){ alert((d && d.detail) || 'Invalid OTP'); return; }
     accessToken = d.access_token;
     document.getElementById('consentBar').className = 'consent-bar unlocked';
-    document.getElementById('consentTitle').textContent = '🔓 Access granted for ' + name + ' (20 min session)';
-    document.getElementById('consentSub').textContent = 'Consent verified — this session can now view history and log visits. Recorded in the audit log.';
+    document.getElementById('consentTitle').textContent = t('consent_granted_prefix') + name + t('consent_granted_suffix');
+    document.getElementById('consentSub').textContent = t('consent_verified');
     document.getElementById('consentStep1').style.display = 'none';
     document.getElementById('consentStep2').style.display = 'none';
     document.getElementById('otpDemoBanner').innerHTML = '';
@@ -565,18 +665,26 @@ async function loadPatient(pid){
       `<div><div class="n">${p.name}</div><div class="m">${p.age||'—'} yrs · ${p.gender||'—'} · ${p.village||'—'}</div></div>
        <div class="m">ID: ${p.patient_id} · ${d.visit_count} visit(s) recorded</div>`;
     const wrap = document.getElementById('timelineWrap');
+    const graphSection = document.getElementById('graphSection');
     if(!accessToken){
       wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">🔒 Request and verify access above to view this patient\'s visit history.</p>';
+      graphSection.style.display = 'none';
       pollMemoryLog();
       return;
     }
     const tr = await fetch(API_BASE + '/api/patient/' + pid + '/timeline', {headers: authHeaders()});
     if(tr.status === 403){
       wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">🔒 Access session expired — request a new OTP above.</p>';
+      graphSection.style.display = 'none';
       pollMemoryLog(); return;
     }
     const td = await tr.json();
-    if(!td.visits.length){ wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">No visits recorded yet.</p>'; return; }
+    if(!td.visits.length){
+      wrap.innerHTML = '<p style="color:#8b968f;font-size:0.85rem;">No visits recorded yet.</p>';
+      graphSection.style.display = 'none';
+      pollMemoryLog();
+      return;
+    }
     wrap.innerHTML = td.visits.slice().reverse().map(v=>{
       const dotClass = v.provider_type.toLowerCase().includes('asha') ? 'asha' : (v.provider_type.toLowerCase().includes('hospital') ? 'hospital' : 'doctor');
       return `<div class="timeline-item">
@@ -589,8 +697,59 @@ async function loadPatient(pid){
         </div>
       </div>`;
     }).join('');
+    graphSection.style.display = 'block';
+    await loadGraph(pid);
   }catch(e){}
   pollMemoryLog();
+}
+
+async function loadGraph(pid){
+  const holder = document.getElementById('graphWrap');
+  try{
+    const r = await fetch(API_BASE + '/api/patient/' + pid + '/graph', {headers: authHeaders()});
+    if(!r.ok){ holder.innerHTML = ''; return; }
+    const d = await r.json();
+    holder.innerHTML = renderGraphSvg(d.nodes, d.edges);
+  }catch(e){ holder.innerHTML = ''; }
+}
+
+function renderGraphSvg(nodes, edges){
+  if(!nodes || !nodes.length) return '<p style="color:#8b968f;font-size:0.85rem;">No graph data yet.</p>';
+  const colors = {patient:'#2f5d46', visit:'#3f7a5a', provider:'#4c6fa3', facility:'#8b968f', diagnosis:'#c1673f', prescription:'#7a5ca8', allergy:'#c0392b'};
+  const byType = {};
+  nodes.forEach(n => { (byType[n.type] = byType[n.type]||[]).push(n); });
+  const order = ['patient','visit','provider','facility','diagnosis','prescription','allergy'];
+  const colGap = 190, rowGap = 56, pad = 30;
+  const pos = {};
+  let maxRows = 0;
+  order.forEach((type, colIdx) => {
+    const items = byType[type] || [];
+    maxRows = Math.max(maxRows, items.length);
+    items.forEach((n, rowIdx) => {
+      pos[n.id] = { x: pad + colIdx*colGap, y: pad + rowIdx*rowGap + (type!=='patient'&&type!=='visit'?10:0) };
+    });
+  });
+  const width = pad*2 + (order.length-1)*colGap + 160;
+  const height = pad*2 + Math.max(maxRows,1)*rowGap + 20;
+
+  const edgeSvg = edges.map(e => {
+    const a = pos[e.from], b = pos[e.to];
+    if(!a || !b) return '';
+    const conflict = e.conflict;
+    return `<line x1="${a.x+70}" y1="${a.y+14}" x2="${b.x}" y2="${b.y+14}" stroke="${conflict?'#c0392b':'#d8d2c4'}" stroke-width="${conflict?2.5:1.3}" stroke-dasharray="${conflict?'5,4':'0'}" />`;
+  }).join('');
+
+  const nodeSvg = nodes.map(n => {
+    const p = pos[n.id];
+    const c = colors[n.type] || '#8b968f';
+    const label = (n.label||'').length > 26 ? n.label.slice(0,24)+'…' : (n.label||'');
+    return `<g>
+      <rect x="${p.x}" y="${p.y}" width="150" height="28" rx="7" fill="${c}" fill-opacity="0.13" stroke="${c}" stroke-width="1.2"/>
+      <text x="${p.x+75}" y="${p.y+18}" font-size="10.5" text-anchor="middle" fill="#2b332d" font-family="Inter, sans-serif">${label}</text>
+    </g>`;
+  }).join('');
+
+  return `<svg viewBox="0 0 ${width} ${height}" width="${width}" height="${height}" style="min-width:${width}px;">${edgeSvg}${nodeSvg}</svg>`;
 }
 
 async function createPatient(){
@@ -677,6 +836,7 @@ async function pollMemoryLog(){
   }catch(e){}
 }
 
+applyLang();
 checkHealth();
 refreshPatients();
 setInterval(pollMemoryLog, 6000);

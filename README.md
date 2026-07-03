@@ -13,10 +13,10 @@ Built for the **Cognee Memory Hackathon**.
 | Criterion | Where to look |
 |---|---|
 | **Potential Impact** | [The problem](#the-problem-india-specific) — a real, documented gap in India's ASHA → PHC → district-hospital → clinic chain, not a hypothetical use case. |
-| **Creativity & Innovation** | The "⚠ Cross-visit conflict check" quick-ask button in the demo — it asks Cognee to reason *across* visits logged by different, unconnected providers (e.g. catching a prescription that conflicts with an allergy noted at a different facility weeks earlier), which a flat database/search can't do without custom logic. |
-| **Technical Excellence** | Real (not simulated) OTP delivery with HMAC-hashed storage, constant-time comparison, and rate limiting — see [Consent & access control](#consent--access-control-dpdp-act-alignment). Runs Docker-first with health checks, and degrades gracefully to an in-memory fallback engine with no LLM key. |
+| **Creativity & Innovation** | The **Memory Graph** panel and its "⚠ Cross-visit conflict check" — Cognee reasons *across* visits logged by different, unconnected providers (e.g. a penicillin allergy noted by a nurse in March, flagged against an amoxicillin prescription filled by an unrelated pharmacy five months later) and the graph visually draws the conflicting edge between them. See [Memory Graph & cross-visit conflict detection](#memory-graph--cross-visit-conflict-detection). |
+| **Technical Excellence** | Real (not simulated) OTP delivery with HMAC-hashed storage, constant-time comparison, and rate limiting — see [Consent & access control](#consent--access-control-dpdp-act-alignment). Deploys on Render + Vercel with no Docker required (Docker still supported as an alternative), and degrades gracefully to an in-memory fallback engine with no LLM key. |
 | **Best Use of Cognee** | Every patient gets a genuinely isolated Cognee dataset (`patient_<id>`) — `remember`, `recall`, `improve`, and `forget` all consistently scope to it, so one patient's history can never leak into another's, and `forget()` actually erases real data. See [Cognee integration](#cognee-integration-kept-explicit-end-to-end) below. |
-| **User Experience** | The "Patient consent required" lock walks a judge through the DPDP-style OTP flow in seconds; the "Memory Lens" panel shows every Cognee call live, so the memory layer is never a black box during a demo. |
+| **User Experience** | The "Patient consent required" lock walks a judge through the DPDP-style OTP flow in seconds; the "Memory Lens" panel shows every Cognee call live, the Memory Graph makes the memory layer visible, and a हिं/EN toggle translates the patient-facing surface (hero, problem framing, consent/OTP flow). |
 | **Presentation Quality** | This README documents the problem, architecture, security model, and API end to end — see the table of contents below for a full walkthrough. |
 
 ---
@@ -127,6 +127,32 @@ This project was developed using Cognee's official Claude Code integration
 (persistent project memory for Claude Code itself while building the repo):
 https://github.com/topoteretes/cognee-integrations/tree/main/integrations/claude-code
 
+### Memory Graph & cross-visit conflict detection
+
+`GET /api/patient/{id}/graph` derives an entity/relationship graph from a
+patient's visits — patient, providers, facilities, diagnoses,
+prescriptions, and allergies as nodes, connected by the visits that mention
+them. Recurring entities (the same allergy or provider mentioned across
+different visits) collapse into a single shared node — that shared node is
+*why* cross-visit reasoning is possible at all: two otherwise-disconnected
+visits both touch it, so a provider on visit 3 can be warned about
+something only ever noted on visit 1.
+
+This view is rendered as SVG directly in the frontend's "Memory Graph"
+panel (no charting library — hand-laid-out, dependency-free) from the same
+visit records that feed Cognee's `remember()`/`recall()` calls. It's built
+app-side from that data rather than dumping Cognee's internal graph store,
+which keeps it fast and fully testable independent of any live LLM key.
+
+The second seeded demo patient (**Ramesh Yadav**) exists specifically to
+make this visible: a nurse notes a penicillin allergy in one visit; five
+months later, at a different facility with a different provider who never
+saw that note, a pharmacist prescribes amoxicillin for an unrelated ear
+infection. The graph draws a red, dashed **⚠ CONFLICT** edge directly
+between the allergy node and that prescription node — the "⚠ Cross-visit
+conflict check" quick-ask button asks Cognee/Claude to explain the same
+thing in plain language.
+
 ---
 
 ## Consent & access control (DPDP Act alignment)
@@ -200,35 +226,26 @@ delivered live to their inbox — `GET /api/health` will report
 
 ---
 
-## Quickstart (Docker — recommended)
-
-```bash
-cd setu-swasth
-cp .env.example .env        # add LLM_API_KEY, and SMTP_* for real email OTP (optional)
-docker compose up --build
-```
-
-Open **http://localhost:8000** — the backend serves the frontend directly.
-A demo patient (Kamala Devi, with a realistic 3-provider visit history) is
-seeded automatically so the product is explorable immediately.
-
-Without `SMTP_*` configured, OTPs show on-screen (demo mode). With them
-configured, OTPs are emailed to the patient in real time — see
-[Real-time OTP delivery](#real-time-otp-delivery-free) above for free setup
-options (Gmail App Password, Brevo, Resend).
-
-## Quickstart (local, no Docker)
+## Quickstart (local)
 
 ```bash
 cd setu-swasth
 python3 -m venv .venv && source .venv/bin/activate
 pip install -r backend/requirements.txt
-cp .env.example .env        # add LLM_API_KEY + SMTP_* as above
+cp .env.example .env        # add LLM_API_KEY + SMTP_* (see above)
 cd backend
 uvicorn main:app --reload --port 8000
 ```
 
-Open **http://localhost:8000**.
+Open **http://localhost:8000** — the backend serves the frontend directly
+from the same origin, so no extra config is needed locally. A demo patient
+(Kamala Devi) and a second, deliberately trickier one (Ramesh Yadav — see
+[Memory Graph & cross-visit conflict detection](#memory-graph--cross-visit-conflict-detection))
+are seeded automatically so the product is explorable immediately.
+
+**Docker, if you prefer it:** `Dockerfile` / `docker-compose.yml` are still
+included and unchanged — `cp .env.example .env && docker compose up --build`
+works exactly as before. Nothing about the app requires it either way.
 
 ## Enabling full Cognee memory + Claude answers
 
@@ -257,6 +274,7 @@ engine, set `COGNEE_BASE_URL` and `COGNEE_API_KEY` — see
 | GET | `/api/patient/{id}/consent-log` | — | Audit trail of access requests/grants/erasures |
 | POST | `/api/patient/{id}/visit` *(requires `X-Access-Token`)* | `{provider_name, provider_type, facility?, symptoms?, diagnosis?, prescription?, allergies_noted?, notes?}` | Log a visit → `cognee.remember()` |
 | GET | `/api/patient/{id}/timeline` *(requires `X-Access-Token`)* | — | Chronological visit list (for the UI timeline) |
+| GET | `/api/patient/{id}/graph` *(requires `X-Access-Token`)* | — | Entity/relationship graph derived from visits, with cross-visit conflicts flagged (for the Memory Graph panel) |
 | POST | `/api/patient/{id}/ask` *(requires `X-Access-Token`)* | `{question, asked_by?}` | Ask about history → `cognee.recall()` → Claude synthesis |
 | POST | `/api/patient/{id}/improve` | — | Trigger `cognee.improve()` (memify) |
 | POST | `/api/patient/{id}/forget` *(requires `X-Access-Token`)* | `{reason?}` | Erase this patient's memory → `cognee.forget()` |
@@ -264,47 +282,57 @@ engine, set `COGNEE_BASE_URL` and `COGNEE_API_KEY` — see
 
 ## Deployment
 
-Setu Swasth ships as a single Docker image — deploy it anywhere Docker (or
-a Docker-native PaaS) runs.
+Production deploy is a **split**: the FastAPI backend on **Render**, the
+static frontend on **Vercel**, talking over CORS (already enabled for all
+origins in `main.py`).
 
-**Render (one-click blueprint included):**
+**1. Backend → Render** (blueprint included, no Docker required):
 ```bash
 # push this repo to GitHub, then in Render:
 # New -> Blueprint -> select this repo -> it reads render.yaml automatically
-# (env: docker, builds from ./Dockerfile)
+# (env: python, builds from backend/requirements.txt — no Dockerfile involved)
 # set these in the Render dashboard's environment variables:
 #   LLM_API_KEY   (required for Cognee + Claude synthesis)
 #   SMTP_HOST, SMTP_USER, SMTP_PASS, SMTP_FROM, OTP_SECRET   (for real email OTP)
 ```
+Note the resulting URL, e.g. `https://setu-swasth-api.onrender.com`.
 
-**Railway / Fly.io:**
+**2. Frontend → Vercel:**
 ```bash
-# push the repo; both platforms auto-detect the Dockerfile
-# set LLM_API_KEY + SMTP_* + OTP_SECRET as environment variables
-# expose port 8000 (or let the platform inject $PORT — the Dockerfile respects it)
+# in the Vercel dashboard: New Project -> import this repo
+# vercel.json (included) points the build at the frontend/ folder directly —
+# no build step needed, it's a static single-file app.
 ```
-
-**Any VPS:**
-```bash
-cp .env.example .env   # fill in LLM_API_KEY + SMTP_* + OTP_SECRET
-docker compose up -d --build
+Then edit `frontend/config.js` (or set it via a Vercel environment
+substitution if you prefer) to point at your Render backend:
+```js
+window.ANAMNIS_API_BASE = "https://setu-swasth-api.onrender.com";
 ```
+Redeploy on Vercel and the frontend will call the Render backend directly.
+(Running the backend locally or via Docker instead? Leave `config.js` as-is
+— `/config.js` is served dynamically by the backend itself in that mode and
+always forces same-origin auto-detection, so nothing needs to be edited.)
 
-The included `docker-compose.yml` adds a health check and `restart:
-unless-stopped`, so it comes back up on its own after a host reboot or crash.
+**Alternative — single-origin deploy (no Vercel):** Render can serve both
+the API and the static frontend from one service, since `main.py` already
+mounts `frontend/` and serves `index.html` at `/`. Just don't set
+`ANAMNIS_API_BASE` and it auto-detects `location.origin`. This is simpler
+but doesn't get Vercel's CDN/edge caching for the static assets.
+
+**Docker (optional, still supported):** `Dockerfile` / `docker-compose.yml`
+remain in the repo for a single-container VPS deploy if you'd rather not
+split frontend/backend — `docker compose up -d --build`.
 
 **Cognee Cloud:** for managed memory infrastructure instead of running Cognee
-embedded, set `COGNEE_BASE_URL` + `COGNEE_API_KEY`.
+embedded, set `COGNEE_BASE_URL` + `COGNEE_API_KEY` (not required — see
+[Do I need Cognee Cloud credentials?](#do-i-need-cognee-cloud-credentials)).
 
-## Naming note
+## AI-assistance disclosure
 
-"Setu Swasth" was chosen by the project owner. A web search during
-development found existing prior use of similar names in India's health-tech
-space (e.g. an existing "Swasthya Setu" app, and "Setu" as an established
-fintech brand) — this is noted here for transparency. If this project is
-taken beyond a hackathon submission, a trademark and domain search (via a
-registrar and India's IP India database) is strongly recommended before
-committing to the name commercially.
+Significant portions of this codebase — including the Cognee integration,
+the OTP/consent security hardening, the Memory Graph feature, and this
+README — were built with the assistance of Claude (Anthropic). Per the
+hackathon rules, AI-assisted tooling is permitted provided it's disclosed.
 
 ## Data & privacy note
 

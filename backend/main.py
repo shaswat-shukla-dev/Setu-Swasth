@@ -64,7 +64,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException, Header
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
-from fastapi.responses import FileResponse
+from fastapi.responses import FileResponse, Response
 from pydantic import BaseModel, Field, EmailStr
 
 load_dotenv()
@@ -568,6 +568,91 @@ async def timeline(pid: str, x_access_token: Optional[str] = Header(None)):
     return {"ok": True, "visits": VISITS.get(pid, [])}
 
 
+# Keywords used to flag an obvious cross-visit allergy/prescription conflict
+# in the graph view. This is a lightweight, deterministic app-side check —
+# separate from (and in addition to) the free-text reasoning Claude does
+# over Cognee's recalled memories in /ask.
+_CONFLICT_PAIRS = [
+    (("penicillin",), ("penicillin", "amoxicillin", "ampicillin")),
+    (("ibuprofen", "nsaid"), ("ibuprofen", "nsaid", "diclofenac")),
+    (("sulfa",), ("sulfa", "sulfamethoxazole", "co-trimoxazole")),
+]
+
+
+@app.get("/api/patient/{pid}/graph")
+async def patient_graph(pid: str, x_access_token: Optional[str] = Header(None)):
+    """Derives an entity/relationship graph from this patient's visits —
+    patient, providers, facilities, diagnoses, prescriptions, and allergies
+    as nodes, connected by the visits that mention them. Recurring entities
+    (the same allergy or provider mentioned in more than one visit) collapse
+    into a single shared node, which is what visually shows *why* cross-visit
+    reasoning is possible: two otherwise-unconnected visits both touch the
+    same allergy node, so a provider on visit 3 can be warned about something
+    noted only on visit 1.
+
+    This view is built directly from the same visit records that feed
+    Cognee's remember()/recall() calls (see /ask for Cognee-grounded Q&A) —
+    it renders the connections in that data as a graph rather than dumping
+    Cognee's internal store, which keeps it fast, dependency-free, and
+    testable independent of any live LLM key."""
+    if pid not in PATIENTS:
+        raise HTTPException(404, "patient not found")
+    _require_access(pid, x_access_token)
+
+    visits = VISITS.get(pid, [])
+    patient = PATIENTS[pid]
+    nodes: Dict[str, Dict[str, Any]] = {}
+    edges: List[Dict[str, str]] = []
+
+    def node(node_id: str, label: str, kind: str) -> str:
+        if node_id not in nodes:
+            nodes[node_id] = {"id": node_id, "label": label, "type": kind}
+        return node_id
+
+    patient_node = node("patient", patient.get("name", "Patient"), "patient")
+
+    for i, v in enumerate(visits):
+        visit_id = node(f"visit_{i}", v.get("date", f"Visit {i+1}"), "visit")
+        edges.append({"from": patient_node, "to": visit_id, "label": "had visit"})
+
+        if v.get("provider_name"):
+            prov_id = node(f"prov_{re.sub(r'[^a-z0-9]+', '_', v['provider_name'].lower())}", v["provider_name"], "provider")
+            edges.append({"from": visit_id, "to": prov_id, "label": "seen by"})
+
+        if v.get("facility"):
+            fac_id = node(f"fac_{re.sub(r'[^a-z0-9]+', '_', v['facility'].lower())}", v["facility"], "facility")
+            edges.append({"from": visit_id, "to": fac_id, "label": "at"})
+
+        if v.get("diagnosis"):
+            diag_id = node(f"diag_{i}", v["diagnosis"], "diagnosis")
+            edges.append({"from": visit_id, "to": diag_id, "label": "diagnosed"})
+
+        rx_id = None
+        if v.get("prescription"):
+            rx_id = node(f"rx_{i}", v["prescription"], "prescription")
+            edges.append({"from": visit_id, "to": rx_id, "label": "prescribed"})
+
+        allergy_id = None
+        if v.get("allergies_noted"):
+            allergy_key = re.sub(r'[^a-z0-9]+', '_', v["allergies_noted"].lower())[:40]
+            allergy_id = node(f"allergy_{allergy_key}", v["allergies_noted"], "allergy")
+            edges.append({"from": visit_id, "to": allergy_id, "label": "allergy noted"})
+
+    # Flag conflicts between any allergy node and any prescription node,
+    # even across different visits / different providers.
+    allergy_nodes = [n for n in nodes.values() if n["type"] == "allergy"]
+    rx_nodes = [n for n in nodes.values() if n["type"] == "prescription"]
+    for a in allergy_nodes:
+        a_text = a["label"].lower()
+        for rx in rx_nodes:
+            rx_text = rx["label"].lower()
+            for allergy_kw, rx_kws in _CONFLICT_PAIRS:
+                if any(k in a_text for k in allergy_kw) and any(k in rx_text for k in rx_kws):
+                    edges.append({"from": a["id"], "to": rx["id"], "label": "⚠ CONFLICT", "conflict": True})
+
+    return {"ok": True, "nodes": list(nodes.values()), "edges": edges}
+
+
 @app.post("/api/patient/{pid}/ask")
 async def ask(pid: str, req: AskRequest, x_access_token: Optional[str] = Header(None)):
     """The core moment: any provider — a new doctor, an ASHA worker, a
@@ -696,6 +781,45 @@ async def seed_demo_patient():
         )
         await mem_remember(text, patient_id=pid)
 
+    # --- Second demo patient: deliberately built to make cross-visit
+    # reasoning obvious. A PHC nurse notes a penicillin allergy in March;
+    # five months later, with no record-sharing between facilities, a
+    # different pharmacy prescribes an amoxicillin course for an unrelated
+    # ear infection. Neither provider saw the other's note — only a system
+    # that remembers across the whole chain can catch it.
+    pid2 = "SS-DEMO002"
+    PATIENTS[pid2] = {
+        "patient_id": pid2, "name": "Ramesh Yadav", "age": 34, "gender": "Male",
+        "village": "Chandpur, Uttar Pradesh", "phone": "98XXXXXX22", "created": time.time(),
+    }
+    VISITS[pid2] = []
+    seed_visits_2 = [
+        dict(provider_name="Nurse Anjali Verma", provider_type="Nurse", facility="PHC Chandpur",
+             symptoms="Skin rash and swelling after a course of antibiotics", diagnosis="Drug allergy — confirmed penicillin sensitivity",
+             prescription="Antihistamine (cetirizine); antibiotics discontinued", allergies_noted="Penicillin allergy (rash + swelling, confirmed by nurse observation)",
+             notes="Patient advised to inform every future provider of this allergy.", days_ago=150),
+        dict(provider_name="Dr. Feroz Khan", provider_type="Doctor", facility="Chandpur Family Clinic",
+             symptoms="Recurring lower back pain, no fever", diagnosis="Mild lumbar strain",
+             prescription="Paracetamol, physiotherapy referral", allergies_noted=None,
+             notes="No red-flag symptoms; advised rest and light stretching.", days_ago=95),
+        dict(provider_name="Pharmacist S. Gupta", provider_type="Pharmacist", facility="Chandpur Medical Store",
+             symptoms="Ear pain and discharge, suspected infection", diagnosis="Suspected otitis media (ear infection)",
+             prescription="Amoxicillin 500mg, 3x daily for 7 days", allergies_noted=None,
+             notes="Sold over the counter; patient did not mention any prior allergy at time of purchase.", days_ago=5),
+    ]
+    for i, v in enumerate(seed_visits_2):
+        record = {k: val for k, val in v.items() if k != "days_ago"}
+        record["timestamp"] = time.time() - v["days_ago"] * 86400
+        record["date"] = datetime.utcfromtimestamp(record["timestamp"]).strftime("%d %b %Y, %H:%M UTC")
+        VISITS[pid2].append(record)
+        text = (
+            f"Visit on {record['date']} — Provider: {v['provider_name']} ({v['provider_type']}) at {v['facility']}. "
+            f"Symptoms: {v['symptoms']}. Diagnosis: {v['diagnosis']}. Prescription: {v['prescription']}. "
+            + (f"Allergy noted: {v['allergies_noted']}. " if v.get('allergies_noted') else "")
+            + f"Notes: {v['notes']}."
+        )
+        await mem_remember(text, patient_id=pid2)
+
 
 # --------------------------------------------------------------------------
 # Static frontend
@@ -706,6 +830,13 @@ if os.path.isdir(_FRONTEND_DIR):
     @app.get("/")
     async def serve_index():
         return FileResponse(os.path.join(_FRONTEND_DIR, "index.html"))
+
+    @app.get("/config.js")
+    async def serve_config_js():
+        # Backend-served mode: always same-origin, so force auto-detect
+        # regardless of what's checked into frontend/config.js (that file's
+        # contents only matter for a separately hosted Vercel frontend).
+        return Response(content='window.ANAMNIS_API_BASE = "";\n', media_type="application/javascript")
 
     app.mount("/static", StaticFiles(directory=_FRONTEND_DIR), name="static")
 

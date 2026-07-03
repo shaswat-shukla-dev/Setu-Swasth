@@ -1,8 +1,10 @@
 services:
   - type: web
-    name: setu-swasth
-    env: docker
-    dockerfilePath: ./Dockerfile
+    name: setu-swasth-api
+    env: python
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app -k uvicorn.workers.UvicornWorker --bind 0.0.0.0:$PORT --workers 2 --timeout 60
     plan: free
     envVars:
       - key: LLM_API_KEY
