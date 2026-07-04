@@ -8,6 +8,29 @@ Built for the **Cognee Memory Hackathon**.
 
 ---
 
+## Screenshots
+
+**Landing page — the core pitch**
+![Hero section](screenshots/hero.png)
+
+**The problem this solves**
+![The problem](screenshots/the-problem.png)
+
+**Live demo — patient lookup, consent/OTP flow, and the "Memory Lens" showing live `remember()` / `recall()` calls**
+![Live demo](screenshots/live-demo.png)
+
+---
+
+## Proof of Anthropic API credit usage
+
+Real spend against the Anthropic API from this project's Claude integration
+(visit summarization, cross-visit conflict synthesis, and the Claude-Code-assisted
+development of this repo):
+
+![Anthropic console credit usage](screenshots/credits-proof.png)
+
+---
+
 ## How this maps to the judging criteria
 
 | Criterion | Where to look |
